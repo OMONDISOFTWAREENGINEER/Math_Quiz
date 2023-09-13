@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Math Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        #question {
+            margin-bottom: 10px;
+        }
+        
+        #options {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        #options li {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        // Add your math questions and answers in the questions array
+        var questions = [
+            {
+                question: "What is 2 + 2?",
+                options: ["3", "4", "5"],
+                answer: "4"
+            },
+            {
+                question:"What is the square root of 64?",
+                options:["9","7","8", 'none'],
+                answer:"8"
+
+            },
+            {
+                question:"Solve the equation: 2x + 5 = 17",
+                options:["7","4","6", '5'],
+                answer:"6"
+
+            },
+            {
+                question:"What is the value of π (pi) rounded to two decimal places?",
+                options:["3.14","31.4","22", "7"],
+                answer:"3.14"
+
+            },
+            {
+                question:"Solve the equation: 3(a + 5) = 21",
+                options:["10","3","4", '2'],
+                answer:"2"
+
+            },
+            {
+                question:"Simplify the expression: 4 + 6 * 2",
+                options:["16","20","14", '18'],
+                answer:"16"
+
+            },
+            {
+                question:"Evaluate: | -8 |",
+                options:["6","7","8", 'none'],
+                answer:"8"
+
+            },
+            {
+                question:"Solve the equation: 2x - 7 = 11",
+                options:["9","18","8", '10'],
+                answer:"9"
+
+            },
+            {
+                question:"Convert 1/4 into a decimal.",
+                options:["0.15","0.35","1.25", '0.25'],
+                answer:"0.25"
+
+            },
+            {
+                question:"Calculate the area of a rectangle with length 8 units and width 5 units",
+                options:["40","26","30", '13'],
+                answer:"40"
+
+            },
+            {
+                question:"Solve the equation: log(base 2) x = 3",
+                options:["6","9","8", '5'],
+                answer:"8"
+
+            },
+            {
+                question:"Simplify the expression: log(base 5)25",
+                options:["3","5","75", '2'],
+                answer:"2"
+
+            },
+            {
+                question:"Evaluate: log(base 10) 100",
+                options:["2","20","8", '10'],
+                answer:"2"
+
+            },
+            {
+                question:"Solve the equation: 10^x = 100",
+                options:["2","5","4", '10'],
+                answer:"2"
+
+            },
+            {
+                question:"Simplify the expression: log(base 3) 81",
+                options:["2","4",'27', '9'],
+                answer:"4"
+
+            },
+            // Add more questions here...
+        ];
+        
+        var currentQuestion = 0;
+        var score = 0;
+        var timeLeft = 60; // Set the duration of the quiz (in seconds)
+        var timerId;
+
+        function displayQuestion() {
+            var q = questions[currentQuestion];
+            
+            document.getElementById("question").innerHTML = q.question;
+            
+            var optionsList = document.getElementById("options");
+            optionsList.innerHTML = "";
+            
+            for (var i = 0; i < q.options.length; i++) {
+                var li = document.createElement("li");
+                var radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "answer";
+                radio.value = q.options[i];
+                li.appendChild(radio);
+                li.append(q.options[i]);
+                optionsList.appendChild(li);
+            }
+        }
+        function startTimer() {
+            timerId = setInterval(function() {
+                timeLeft--;
+                document.getElementById("timer").textContent = "Time left: " + timeLeft + "s";
+                
+                if (timeLeft === 0) {
+                    clearInterval(timerId);
+                    submitAnswer();
+                }
+            }, 1000);
+        }
+        
+        function submitAnswer() {
+            clearInterval(timerId);
+            var selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                if (selectedOption.value === questions[currentQuestion].answer) {
+                    score++;
+                }
+            
+                currentQuestion++;
+                
+                if (currentQuestion < questions.length) {
+                    displayQuestion();
+                    startTimer();
+                } else {
+                    // Show final score
+                    document.getElementById("quiz").innerHTML = "<h1>Quiz Completed!</h1><h2>Your score: " + score + "/" + questions.length + "</h2>";
+                }
+            } else {
+                alert("Please select an option.");
+            }
+        }
+        
+        window.onload = function() {
+            displayQuestion();
+            startTimer();
+            document.getElementById("submitBtn").addEventListener("click", submitAnswer);
+        };
+    </script>
+</head>
+
+<body>
+    <div class="container" id="quiz">
+        <h1>Math Quiz</h1>
+        <div id="question"></div>
+        <ul id="options"></ul>
+        <button id="submitBtn">Submit</button>
+        <div id="timer">Time left: 60s</div>
+    </div>
+</body>
+
+</html>
